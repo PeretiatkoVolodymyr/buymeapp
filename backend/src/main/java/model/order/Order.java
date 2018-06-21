@@ -2,8 +2,8 @@ package model.order;
 
 import model.BaseEntity;
 import model.user.User;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+
+import javax.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,10 +12,19 @@ import java.util.List;
 @Table(name = "orders")
 public class Order extends BaseEntity {
 
+    @Column
     private LocalDateTime date;
+
+    @Column
     private User user;
+
+    @Column
     private String adress;
+
+    @Enumerated(EnumType.STRING)
     private OrderStatus status;
+
+    @OneToMany(mappedBy="order")
     private List<OrderLine> orderProducts;
 
 
