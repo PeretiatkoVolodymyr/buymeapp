@@ -2,11 +2,17 @@ package model.order;
 
 import model.product.Product;
 
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+
+@Entity
 public class OrderLine {
 
-    Product product;
-    int price;
-    int quantity;
-    int amount;
+    @ManyToOne
+    private Order order;
+    private Product product;
+    private int price;
+    private int quantity;
+    private int amount;
 
 }

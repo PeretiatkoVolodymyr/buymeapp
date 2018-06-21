@@ -2,6 +2,7 @@ package model.product;
 
 import model.BaseEntity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -9,6 +10,6 @@ import javax.persistence.Table;
 @Table(name = "groups")
 public class Group extends BaseEntity {
 
-    Group group = null;
+    private Group group = null;
 
 }
