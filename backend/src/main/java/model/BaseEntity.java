@@ -6,6 +6,12 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import java.util.Objects;
 
+/**
+ * BaseEntity abstract POJO model (parent to other Entities).
+ *
+ * @author PeretiatkoVolodymyr
+ * @version 0.1
+ */
 @MappedSuperclass
 public abstract class BaseEntity {
 
