@@ -6,6 +6,7 @@ import model.user.User;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 /**
@@ -19,6 +20,7 @@ import java.util.List;
  */
 public class UserDao implements Dao<User, Integer> {
 
+    @PersistenceContext
     private EntityManagerFactory factory;
 
     @Override
@@ -94,7 +96,28 @@ public class UserDao implements Dao<User, Integer> {
 
     @Override
     public User update(User entity) {
-        return null;
+
+        if (entity == null) {
+            return null;
+        }
+
+        User old = null;
+
+        EntityManager manager = factory.createEntityManager();
+        EntityTransaction transaction = manager.getTransaction();
+
+        try {
+            transaction.begin();
+            old = manager.find(User.class, entity.getId());
+            manager.merge(entity);
+            transaction.commit();
+        } catch (Exception e) {
+            transaction.rollback();
+        } finally {
+            manager.close();
+        }
+
+        return old;
     }
 
 }
