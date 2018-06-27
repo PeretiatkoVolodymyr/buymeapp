@@ -18,7 +18,7 @@ import java.util.List;
  *
  * @see Dao
  */
-public class UserDao implements Dao<User, Integer> {
+public class UserDaoImpl implements Dao<User, Integer> {
 
     @PersistenceContext
     private EntityManagerFactory factory;
