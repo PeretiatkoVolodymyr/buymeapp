@@ -8,8 +8,8 @@ import javax.persistence.*;
 @Entity
 public class OrderLine extends BaseEntity {
 
-    @ManyToOne
-    @Column
+    @ManyToOne(cascade = {CascadeType.ALL, CascadeType.MERGE, CascadeType.PERSIST}, targetEntity = Order.class, optional=true)
+    @JoinColumn(name = "id", insertable = false, updatable = false)
     private Order order;
 
     @ManyToOne
