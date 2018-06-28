@@ -5,7 +5,7 @@ import model.product.Product;
 
 import javax.persistence.*;
 
-@Entity
+
 public class OrderLine extends BaseEntity {
 
     @ManyToOne(cascade = {CascadeType.ALL, CascadeType.MERGE, CascadeType.PERSIST}, targetEntity = Order.class, optional=true)

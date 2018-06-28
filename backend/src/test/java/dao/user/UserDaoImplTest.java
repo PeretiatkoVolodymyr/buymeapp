@@ -7,7 +7,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.lang.reflect.Field;
 
-public class UserDaoTest {
+public class UserDaoImplTest {
 
     private static UserDaoImpl dao;
     private static EntityManagerFactory factory;
@@ -20,7 +20,8 @@ public class UserDaoTest {
         dao = new UserDaoImpl();
 
         //set factory in dao
-        Field fieldFactory = dao.getClass().getField("factory");
+        Field fieldFactory = dao.getClass().getDeclaredField("factory");
+        fieldFactory.setAccessible(true);
         fieldFactory.set(dao, factory);
 
     }
@@ -36,6 +37,7 @@ public class UserDaoTest {
 
         User newEntity = dao.create(new User());
         Assert.assertTrue(newEntity.getId() != 0);
+
     }
 
 
