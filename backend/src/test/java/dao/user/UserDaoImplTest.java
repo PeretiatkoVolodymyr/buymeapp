@@ -16,7 +16,7 @@ public class UserDaoImplTest {
 
     private static UserDaoImpl dao;
     private static EntityManagerFactory factory;
-    private static List<BaseEntity> users;
+    private static List<BaseEntity> actUsers;
 
     @BeforeClass
     public static void init() throws Exception {
@@ -37,12 +37,15 @@ public class UserDaoImplTest {
         User user4 = new User("user4", "4qaz", "Mike", "m@i.com", null, "+38044");
         User user5 = new User("user5", "5qaz", "Jhon", "h@i.com", null, "+38044");
 
-        users = new ArrayList<>();
-        users.add(user1);
-        users.add(user2);
-        users.add(user3);
-        users.add(user4);
-        users.add(user5);
+        actUsers = new ArrayList<>();
+        actUsers.add(user1);
+        actUsers.add(user2);
+        actUsers.add(user3);
+        actUsers.add(user4);
+        actUsers.add(user5);
+
+        //fill in test data
+        DaoTestUtil.createAllEllements(dao, actUsers);
     }
 
     @AfterClass
@@ -50,22 +53,16 @@ public class UserDaoImplTest {
         factory.close();
     }
 
-    @Before
-    public void setUp() throws Exception {
-
-        //fill in test data
-        DaoTestUtil.createAllEllements(dao, users);
-    }
-
     @After
     public void teardown() throws Exception {
-
-        //remove test data
-        DaoTestUtil.DeleteAllData(factory, User.class.getName());
+        //remove test data that not in list actUsers
+        DaoTestUtil.removeAllThatNotInclude(dao, actUsers);
     }
 
     @Test
     public void create() throws Exception {
+
+        DaoTestUtil.createAllEllements(dao, actUsers);
 
         User newEntity = dao.create(new User("user6", "1qaz", "Jhon", "i@i.com", null, "+38044"));
         assertTrue(newEntity.getId() > 0);
@@ -74,14 +71,20 @@ public class UserDaoImplTest {
         newEntity = dao.create(null);
         assertEquals(null, newEntity);
 
+        DaoTestUtil.DeleteAllData(factory, User.class.getName());
+
     }
 
     @Test
     public void find() throws Exception {
 
-        List<User> users = dao.findAll();
+        List<User> expected = dao.findAll();
+        User expectedU = dao.find(6);
+
+        assertEquals(expected, actUsers);
 
     }
+
 
 
 }

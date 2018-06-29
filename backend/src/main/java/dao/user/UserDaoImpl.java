@@ -2,6 +2,7 @@ package dao.user;
 
 import dao.Dao;
 import model.user.User;
+import org.apache.log4j.Logger;
 
 import javax.persistence.*;
 import java.util.List;
@@ -17,11 +18,18 @@ import java.util.List;
  */
 public class UserDaoImpl implements Dao<User, Integer> {
 
+    private static final Logger LOGGER = Logger.getLogger(UserDaoImpl.class);
+
     @PersistenceContext
     private EntityManagerFactory factory;
 
     @Override
     public User create(User entity) {
+
+        if (entity == null) {
+            LOGGER.error("CREATE. entity is null");
+            return null;
+        }
 
         EntityManager em = factory.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
@@ -30,9 +38,10 @@ public class UserDaoImpl implements Dao<User, Integer> {
             transaction.begin();
             em.persist(entity);
             transaction.commit();
+            LOGGER.info("save new user");
         } catch (Exception e) {
-
             transaction.rollback();
+            LOGGER.info("User not save rollback");
         } finally {
             em.close();
         }
@@ -42,6 +51,8 @@ public class UserDaoImpl implements Dao<User, Integer> {
 
     @Override
     public List<User> findAll() {
+
+        LOGGER.info("search for all Users (without limits)");
 
         EntityManager em = factory.createEntityManager();
 
@@ -58,6 +69,12 @@ public class UserDaoImpl implements Dao<User, Integer> {
     @Override
     public List<User> findAll(int offset, int length) {
 
+        if (offset < 0 || length < 0) {
+            LOGGER.error("Offset or/and length is less then 0");
+            return null;
+        }
+
+        LOGGER.info("search for all Users (with limits)");
 
         EntityManager em = factory.createEntityManager();
 
@@ -77,8 +94,11 @@ public class UserDaoImpl implements Dao<User, Integer> {
     public User find(Integer id) {
 
         if (id == null || id < 0) {
+            LOGGER.error("User id is null or is less then 0");
             return null;
         }
+
+        LOGGER.info("search for single User by id");
 
         EntityManager em = factory.createEntityManager();
 
@@ -97,8 +117,11 @@ public class UserDaoImpl implements Dao<User, Integer> {
     public User remove(Integer id) {
 
         if (id == null || id < 0) {
+            LOGGER.error("User id is null or is less then 0");
             return null;
         }
+
+        LOGGER.info("remove single User by id");
 
         EntityManager em = factory.createEntityManager();
 
@@ -122,6 +145,7 @@ public class UserDaoImpl implements Dao<User, Integer> {
     public User update(User entity) {
 
         if (entity == null) {
+            LOGGER.error("User entity is null");
             return null;
         }
 
@@ -135,8 +159,10 @@ public class UserDaoImpl implements Dao<User, Integer> {
             old = em.find(User.class, entity.getId());
             em.merge(entity);
             transaction.commit();
+            LOGGER.info("update");
         } catch (Exception e) {
             transaction.rollback();
+            LOGGER.info("User not update rollback");
         } finally {
             em.close();
         }

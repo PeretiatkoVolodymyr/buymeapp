@@ -1,5 +1,6 @@
 package dao;
 
+import dao.user.UserDaoImpl;
 import model.BaseEntity;
 
 import javax.persistence.EntityManager;
@@ -28,6 +29,21 @@ public class DaoTestUtil {
     public static void createAllEllements(Dao dao, List<BaseEntity> entities){
 
         entities.forEach(e -> dao.create(e));
+
+    }
+
+    public static void removeAllEllements(Dao dao, List<BaseEntity> entities){
+
+        entities.forEach(e -> dao.remove(e.getId()));
+
+    }
+
+    public static void removeAllThatNotInclude(Dao dao, List<BaseEntity> actUsers) {
+
+        List<BaseEntity> entities = dao.findAll();
+        entities.removeAll(actUsers);
+
+        entities.forEach(e -> dao.remove(e.getId()));
 
     }
 }
