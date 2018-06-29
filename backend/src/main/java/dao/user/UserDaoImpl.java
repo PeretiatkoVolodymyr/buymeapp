@@ -3,10 +3,7 @@ package dao.user;
 import dao.Dao;
 import model.user.User;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.PersistenceContext;
+import javax.persistence.*;
 import java.util.List;
 
 /**
@@ -26,18 +23,18 @@ public class UserDaoImpl implements Dao<User, Integer> {
     @Override
     public User create(User entity) {
 
-        EntityManager manager = factory.createEntityManager();
-        EntityTransaction transaction = manager.getTransaction();
+        EntityManager em = factory.createEntityManager();
+        EntityTransaction transaction = em.getTransaction();
 
         try {
             transaction.begin();
-            manager.persist(entity);
+            em.persist(entity);
             transaction.commit();
         } catch (Exception e) {
 
             transaction.rollback();
         } finally {
-            manager.close();
+            em.close();
         }
 
         return entity;
@@ -45,12 +42,35 @@ public class UserDaoImpl implements Dao<User, Integer> {
 
     @Override
     public List<User> findAll() {
-        return null;
+
+        EntityManager em = factory.createEntityManager();
+
+        Query query = em.createQuery("SELECT u FROM User u");
+
+        List<User> result = query.getResultList();
+
+        em.close();
+
+        return result;
+
     }
 
     @Override
     public List<User> findAll(int offset, int length) {
-        return null;
+
+
+        EntityManager em = factory.createEntityManager();
+
+        Query query = em.createQuery("SELECT u FROM User u");
+
+        query.setMaxResults(length);
+        query.setFirstResult(offset);
+
+        List<User> result = query.getResultList();
+
+        em.close();
+
+        return result;
     }
 
     @Override
@@ -60,13 +80,17 @@ public class UserDaoImpl implements Dao<User, Integer> {
             return null;
         }
 
-        EntityManager manager = factory.createEntityManager();
+        EntityManager em = factory.createEntityManager();
+
+        User found;
 
         try {
-            return manager.find(User.class, id);
+            found = em.find(User.class, id);
         } finally {
-            manager.close();
+            em.close();
         }
+
+        return found;
     }
 
     @Override
@@ -76,19 +100,19 @@ public class UserDaoImpl implements Dao<User, Integer> {
             return null;
         }
 
-        EntityManager manager = factory.createEntityManager();
+        EntityManager em = factory.createEntityManager();
 
-        User entity = manager.find(User.class, id);
+        User entity = em.find(User.class, id);
 
-        EntityTransaction transaction = manager.getTransaction();
+        EntityTransaction transaction = em.getTransaction();
         try {
             transaction.begin();
-            manager.remove(entity);
+            em.remove(entity);
             transaction.commit();
         } catch (Exception e) {
             transaction.rollback();
         } finally {
-            manager.close();
+            em.close();
         }
 
         return entity;
@@ -103,18 +127,18 @@ public class UserDaoImpl implements Dao<User, Integer> {
 
         User old = null;
 
-        EntityManager manager = factory.createEntityManager();
-        EntityTransaction transaction = manager.getTransaction();
+        EntityManager em = factory.createEntityManager();
+        EntityTransaction transaction = em.getTransaction();
 
         try {
             transaction.begin();
-            old = manager.find(User.class, entity.getId());
-            manager.merge(entity);
+            old = em.find(User.class, entity.getId());
+            em.merge(entity);
             transaction.commit();
         } catch (Exception e) {
             transaction.rollback();
         } finally {
-            manager.close();
+            em.close();
         }
 
         return old;
