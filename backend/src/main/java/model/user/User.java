@@ -14,7 +14,7 @@ import javax.persistence.*;
  * @see BaseEntity
  */
 @Entity
-@Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = {"login"})})
+@Table(name = "users")
 public class User extends BaseEntity {
 
     @Column
