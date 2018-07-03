@@ -13,7 +13,7 @@ public class DaoTestUtil {
     public static final String PERSISTENCE_TEST_UNIT = "hibernate-test-unit";
 
 
-    public static void DeleteAllData(EntityManagerFactory factory, String className){
+    public static void deleteAllData(EntityManagerFactory factory, String className){
 
         EntityManager em = factory.createEntityManager();
 

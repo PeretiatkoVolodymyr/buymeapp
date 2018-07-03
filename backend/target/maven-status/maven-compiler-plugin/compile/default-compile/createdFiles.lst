@@ -1,0 +1,11 @@
+model\order\OrderStatus.class
+model\product\Group.class
+model\BaseEntity.class
+model\product\Product.class
+model\user\Adress.class
+controller\MainController.class
+model\user\User.class
+dao\Dao.class
+dao\user\UserDaoImpl.class
+model\order\OrderLine.class
+model\order\Order.class
