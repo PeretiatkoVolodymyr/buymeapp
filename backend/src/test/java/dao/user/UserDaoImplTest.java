@@ -30,6 +30,16 @@ public class UserDaoImplTest {
         fieldFactory.setAccessible(true);
         fieldFactory.set(dao, factory);
 
+    }
+
+    @AfterClass
+    public static void down() throws Exception {
+        factory.close();
+    }
+
+    @Before
+    public void initTestData() throws Exception {
+
         //test data
         User user1 = new User("user1", "1qaz", "Jhon", "j@i.com", null, "+38044");
         User user2 = new User("user2", "2qaz", "Bohj", "b@i.com", null, "+38044");
@@ -48,15 +58,10 @@ public class UserDaoImplTest {
         DaoTestUtil.createAllEllements(dao, actUsers);
     }
 
-    @AfterClass
-    public static void down() throws Exception {
-        factory.close();
-    }
-
     @After
     public void teardown() throws Exception {
         //remove test data that not in list actUsers
-        DaoTestUtil.removeAllThatNotInclude(dao, actUsers);
+        DaoTestUtil.deleteAllData(factory, User.class.getName());
     }
 
     @Test
@@ -70,8 +75,6 @@ public class UserDaoImplTest {
 
         newEntity = dao.create(null);
         assertEquals(null, newEntity);
-
-        DaoTestUtil.DeleteAllData(factory, User.class.getName());
 
     }
 
