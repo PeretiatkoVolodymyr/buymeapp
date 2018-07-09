@@ -92,10 +92,10 @@ public class UserDaoImplTest {
     @Test
     public void find() throws Exception {
 
-        User actual = dao.find(1);
+        User actual = dao.find(user1.getId());
         assertEquals(user1, actual);
 
-        actual = dao.find(5);
+        actual = dao.find(user5.getId());
         assertEquals(user5, actual);
 
     }
