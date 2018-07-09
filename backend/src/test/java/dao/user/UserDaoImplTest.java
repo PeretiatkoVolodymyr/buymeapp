@@ -82,7 +82,6 @@ public class UserDaoImplTest {
     public void find() throws Exception {
 
         List<User> expected = dao.findAll();
-        User expectedU = dao.find(6);
 
         assertEquals(expected, actUsers);
 
