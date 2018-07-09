@@ -18,6 +18,8 @@ public class UserDaoImplTest {
     private static EntityManagerFactory factory;
     private static List<BaseEntity> actUsers;
 
+    User user1, user2, user3, user4, user5;
+
     @BeforeClass
     public static void init() throws Exception {
 
@@ -41,11 +43,11 @@ public class UserDaoImplTest {
     public void initTestData() throws Exception {
 
         //test data
-        User user1 = new User("user1", "1qaz", "Jhon", "j@i.com", null, "+38044");
-        User user2 = new User("user2", "2qaz", "Bohj", "b@i.com", null, "+38044");
-        User user3 = new User("user3", "3qaz", "Burz", "u@i.com", null, "+38044");
-        User user4 = new User("user4", "4qaz", "Mike", "m@i.com", null, "+38044");
-        User user5 = new User("user5", "5qaz", "Jhon", "h@i.com", null, "+38044");
+        user1 = new User("user1", "1qaz", "Jhon", "j@i.com", null, "+38044");
+        user2 = new User("user2", "2qaz", "Bohj", "b@i.com", null, "+38044");
+        user3 = new User("user3", "3qaz", "Burz", "u@i.com", null, "+38044");
+        user4 = new User("user4", "4qaz", "Mike", "m@i.com", null, "+38044");
+        user5 = new User("user5", "5qaz", "Jhon", "h@i.com", null, "+38044");
 
         actUsers = new ArrayList<>();
         actUsers.add(user1);
@@ -60,7 +62,7 @@ public class UserDaoImplTest {
 
     @After
     public void teardown() throws Exception {
-        //remove test data that not in list actUsers
+        //remove all test data that in users table
         DaoTestUtil.deleteAllData(factory, User.class.getName());
     }
 
@@ -79,14 +81,24 @@ public class UserDaoImplTest {
     }
 
     @Test
-    public void find() throws Exception {
+    public void findAll() throws Exception {
 
-        List<User> expected = dao.findAll();
+        List<User> actual = dao.findAll();
 
-        assertEquals(expected, actUsers);
+        assertEquals(actUsers, actual);
 
     }
 
+    @Test
+    public void find() throws Exception {
+
+        User actual = dao.find(1);
+        assertEquals(user1, actual);
+
+        actual = dao.find(5);
+        assertEquals(user5, actual);
+
+    }
 
 
 }
