@@ -54,13 +54,13 @@ public class UserDaoImplTest {
         actUsers.add(user4);
         actUsers.add(user5);
 
-        //fill in test data
+        //fill in test data in db
         DaoTestUtil.createAllEllements(dao, actUsers);
     }
 
     @After
     public void teardown() throws Exception {
-        //remove test data that not in list actUsers
+        //remove test data from db
         DaoTestUtil.deleteAllData(factory, User.class.getName());
     }
 
@@ -82,7 +82,6 @@ public class UserDaoImplTest {
     public void find() throws Exception {
 
         List<User> expected = dao.findAll();
-        User expectedU = dao.find(6);
 
         assertEquals(expected, actUsers);
 
