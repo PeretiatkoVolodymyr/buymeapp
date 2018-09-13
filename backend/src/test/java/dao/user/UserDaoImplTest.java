@@ -74,10 +74,12 @@ public class UserDaoImplTest {
         User newEntity = dao.create(new User("user6", "1qaz", "Jhon", "i@i.com", null, "+38044"));
         assertTrue(newEntity.getId() > 0);
         assertTrue("user6".equals(newEntity.getLogin()));
+    }
 
-        newEntity = dao.create(null);
+    @Test
+    public void createNullCheck() throws Exception {
+        User newEntity = dao.create(null);
         assertEquals(null, newEntity);
-
     }
 
     @Test
@@ -97,8 +99,20 @@ public class UserDaoImplTest {
 
         actual = dao.find(user5.getId());
         assertEquals(user5, actual);
-
     }
 
+    @Test
+    public void remove() {
 
+        User newEntity = dao.create(new User("user7", "1qaz", "Jhon", "i@i.com", null, "+38044"));
+
+        int entityID = newEntity.getId();
+
+        assertTrue(entityID > 0);
+
+        dao.remove(entityID);
+
+        assertEquals(null, dao.find(entityID));
+
+    }
 }
