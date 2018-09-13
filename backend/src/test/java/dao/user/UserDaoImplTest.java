@@ -56,7 +56,7 @@ public class UserDaoImplTest {
         actUsers.add(user4);
         actUsers.add(user5);
 
-        //fill in test data
+        //fill in test data in db
         DaoTestUtil.createAllEllements(dao, actUsers);
     }
 
@@ -83,9 +83,9 @@ public class UserDaoImplTest {
     @Test
     public void findAll() throws Exception {
 
-        List<User> actual = dao.findAll();
+        List<User> expected = dao.findAll();
 
-        assertEquals(actUsers, actual);
+        assertEquals(actUsers, expected);
 
     }
 
